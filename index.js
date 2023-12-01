@@ -63,7 +63,7 @@ app.get("/getAddress", async (req, res) => {
       return res.status(400).json({ error: "Invalid client coordinates" });
     }
 
-    const thresholdDistance = 13; // Threshold distance in kilometers
+    const thresholdDistance = 1000; // Threshold distance in kilometers
 
     // Check if the client is near any office location
     const nearOffices = officeLocations.filter(
