@@ -64,5 +64,39 @@ router.post("/checkNearOffice", (req, res) => {
 
   res.json({ isNearOffice: nearOffices.length > 0, nearOffices });
 });
+const pinCodes = [
+  570008, 571602, 571186, 570026, 570020, 570004, 570010, 570004, 570001,
+  570013, 570007, 570001, 570002, 570017, 570010, 570020, 570008, 570001,
+  570010, 570019, 570012, 570014, 570008, 570023, 570011, 570001, 570004,
+  570001, 570024, 570004, 570023, 570019, 570004, 570001, 570006, 570021,
+  570016, 570004, 570001, 570004, 570008, 570005, 570008, 570019, 570004,
+  570001, 570010, 570021, 570015, 570011, 570007, 570020, 570004, 570006,
+  570009, 570004, 570021, 570015, 570011, 570003, 570009, 570004, 570021,
+  570015, 570019, 570005, 570004, 570002, 570008, 570017, 570008, 570020,
+  571130,
+];
+
+router.post("/validatepincode", async (req, res) => {
+  try {
+    const { pincode } = req.body;
+    console.log(pincode);
+
+    if (!pincode || !/^\d+$/.test(Number.parseInt(pincode))) {
+      // Check if pincode is not provided or not a valid number
+      throw new Error("Invalid pincode provided");
+    }
+
+    const isPinCodeValid = pinCodes.includes(parseInt(pincode));
+
+    if (isPinCodeValid) {
+      res.status(200).json({ message: "Valid pin code" });
+    } else {
+      res.status(401).json({ message: "Cannot deliver to this address" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ error: error.message });
+  }
+});
 
 module.exports = router;
